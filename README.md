@@ -22,6 +22,22 @@ npm install css-loader style-loader sass-loader node-sass --save-dev
 npm install --save-dev extract-text-webpack-plugin
 ```
 
+## Setup Notes
+
+```
+npm install --save jquery
+```
+
+Import jquery in app.js `import 'jquery`
+
+```
+new webpack.ProvidePlugin({
+  jQuery: 'jquery',
+  $: 'jquery',
+  jquery: 'jquery'
+})
+```
+
 [A Beginner’s Guide to Webpack 2 and Module Bundling](https://www.sitepoint.com/beginners-guide-to-webpack-2-and-module-bundling/)
 
 ## References

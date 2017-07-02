@@ -1,2 +1,12 @@
 html, body {
   color: #444; }
+
+#mazy {
+  border: 1px solid red;
+  padding: 5px;
+  margin-left: auto;
+  margin-right: auto; }
+
+body {
+  background: black;
+  padding: 5px; }

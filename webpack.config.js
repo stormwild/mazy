@@ -22,14 +22,8 @@ const config = {
         }, 
         {
           test: /\.scss$/,
-          /*use: [
-            'style-loader',
-            'css-loader',
-            'sass-loader'
-          ],*/
           use: ExtractTextPlugin.extract({
               fallback: 'style-loader',
-              //resolve-url-loader may be chained before sass-loader if necessary
               use: ['css-loader', 'sass-loader']
             })
         }]
@@ -42,6 +36,11 @@ const config = {
         }),
         new ExtractTextPlugin({
             filename: 'css/style.css'
+        }),
+        new webpack.ProvidePlugin({
+          jQuery: 'jquery',
+          $: 'jquery',
+          jquery: 'jquery'
         })
     ]
 };

@@ -1,3 +1,9 @@
 html, body {
     color: $textColor;
 }
+
+body {
+    > header, > footer {
+        background-color: #efefef;
+    }
+}

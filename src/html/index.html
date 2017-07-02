@@ -5,7 +5,33 @@
     <title><%= htmlWebpackPlugin.options.title %></title>
 </head>
 <body>
-    
-    <canvas id="mazy" width="400px" height="400px"></canvas>
+    <header>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>Mazy <img src="<%= require('../img/mazy-logo.png') %>" alt="Mazy logo"></h1>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="body">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>Try out this maze</h2>
+                    <canvas id="mazy" width="400px" height="400px"></canvas>
+                </div>
+            </div>        
+        </div>
+    </div>
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <p><small>Copyright &copy;</small></p>
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>

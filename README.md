@@ -31,6 +31,8 @@ npm install --save jquery
 Import jquery in app.js `import 'jquery`
 
 ```
+// In webpack config add webpack's built in ProvidePlugin to the plugins array
+
 new webpack.ProvidePlugin({
   jQuery: 'jquery',
   $: 'jquery',

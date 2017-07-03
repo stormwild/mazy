@@ -15769,7 +15769,12 @@ draw();
         let visited = 1;
 
         // Loop through all available cell positions
-        while (visited < totalCells) {}
+        while (visited < totalCells) {
+            // Determine neighboring cells
+            let pot = [[currentCell[0] - 1, currentCell[1], 0, 2], [currentCell[0], currentCell[1] + 1, 1, 3], [currentCell[0] + 1, currentCell[1], 2, 0], [currentCell[0], currentCell[1] - 1, 3, 1]];
+
+            let neighbors = [];
+        }
 
         return cells;
     },

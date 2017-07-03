@@ -10264,12 +10264,16 @@ return jQuery;
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_bootstrap__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_bootstrap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_bootstrap__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__scss_main_scss__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__scss_main_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__scss_main_scss__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__scss_main_scss__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__scss_main_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__scss_main_scss__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_jquery__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_bootstrap__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_bootstrap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_bootstrap__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_mazy__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_mazy___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_mazy__);
+
+
 
 
 
@@ -15643,6 +15647,85 @@ return Tether;
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 5 */,
+/* 6 */,
+/* 7 */,
+/* 8 */,
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function($) {const canvas = $('#mazy');
+
+console.log(canvas);
+
+const board = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 1, 1, 1, 1, 1, 1, 1, 1, 0], [1, 0, 1, 0, 0, 0, 0, 0, 1, 0], [0, 0, 0, 0, 1, 1, 1, 0, 1, 0], [0, 1, 1, 0, 0, 0, 1, 0, 1, 0], [0, 0, 1, 1, 1, 1, 1, 0, 1, 0], [1, 0, 1, 0, 0, 0, 1, 0, 1, 0], [1, 0, 1, 0, 1, 0, 1, 0, 0, 0], [1, 0, 1, 0, 1, 0, 0, 1, 1, 0], [-1, 0, 1, 0, 1, 1, 0, 0, 0, 0]];
+
+let player = {
+    x: 0,
+    y: 0
+};
+
+const draw = function () {
+    let width = canvas.width();
+    const BLOCK_SIZE = width / board.length;
+    const ctx = canvas[0].getContext('2d');
+
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, width, width);
+
+    ctx.fillStyle = "white";
+
+    for (let y = 0; y < board.length; y++) {
+        for (let x = 0; x < board[y].length; x++) {
+            // Draw a wall
+            if (board[y][x] === 1) {
+                ctx.fillRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+            } else if (board[y][x] === -1) {
+                ctx.beginPath();
+                ctx.lineWidth = 5;
+                ctx.strokeStyle = "gold";
+                ctx.moveTo(x * BLOCK_SIZE, y * BLOCK_SIZE);
+                ctx.lineTo((x + 1) * BLOCK_SIZE, (y + 1) * BLOCK_SIZE);
+                ctx.moveTo(x * BLOCK_SIZE, (y + 1) * BLOCK_SIZE);
+                ctx.lineTo((x + 1) * BLOCK_SIZE, y * BLOCK_SIZE);
+                ctx.stroke();
+            }
+        }
+    }
+
+    // Draw the player
+    ctx.beginPath();
+    let half = BLOCK_SIZE / 2;
+    ctx.fillStyle = "blue";
+    ctx.arc(player.x * BLOCK_SIZE + half, player.y * BLOCK_SIZE + half, half, 0, 2 * Math.PI);
+    ctx.fill();
+};
+
+let canMove = function (x, y) {
+    return y >= 0 && y < board.length && x >= 0 && x < board[y].length && board[y][x] !== 1;
+};
+
+$(document).keyup(function (e) {
+    e.preventDefault();
+
+    if (e.which === 38 && canMove(player.x, player.y - 1)) {
+        // up arrow
+        player.y--;
+    } else if (e.which === 40 && canMove(player.x, player.y + 1)) {
+        // down arrow
+        player.y++;
+    } else if (e.which === 37 && canMove(player.x - 1, player.y)) {
+        player.x--;
+    } else if (e.which === 39 && canMove(player.x + 1, player.y)) {
+        player.x++;
+    }
+    draw();
+});
+
+draw();
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ })
 ],[1]);

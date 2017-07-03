@@ -3,6 +3,8 @@ const path = require('path');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+
 
 const config = {
     context: path.resolve(__dirname, 'src'),
@@ -30,7 +32,7 @@ const config = {
         {
             test: /\.(png|svg|jpg|gif)$/,
             use: {
-               loader: 'file-loader',
+               loader: 'url-loader',
                options: {
                    name: 'img/[name].[ext]', // check the path
                }
@@ -39,21 +41,23 @@ const config = {
         {
           test: /\.(woff|woff2|eot|ttf|otf)$/,
           use: [
-            'file-loader'
+              {
+                  loader: 'url-loader'
+              }
           ]
         }]
     },
     plugins: [
+        new CleanWebpackPlugin(['dist']),
         new HtmlWebpackPlugin({ 
             title: 'Mazy - Simple Js Maze', 
             filename: '../index.html', 
             template: 'html/index.html'
         }),
         new ExtractTextPlugin({
-            filename: 'css/style.css'
+            filename: 'css/styles.css'
         }),
         new webpack.ProvidePlugin({
-          jQuery: 'jquery',
           $: 'jquery',
           jQuery: 'jquery',
           'window.jQuery': 'jquery',

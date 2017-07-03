@@ -3,17 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>Mazy - Simple Js Maze</title>
-<link href="/dist/css/style.css" rel="stylesheet"></head>
+<link href="/dist/css/styles.css" rel="stylesheet"></head>
 <body>
     <header>
         <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <h1>Mazy <img src="/dist/img/mazy-logo.png" alt="Mazy logo"></h1>
-                </div>
-            </div>
+            <nav class="navbar navbar-toggleable-sm navbar-light">
+              <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <a class="navbar-brand" href="#"><img class="logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA81JREFUeNrsndFR20AQhiWF9/iZl5gK4hkKsF1BoALsCkAV2KkAqMCkApwKMAUwkArwG49xOsgus2Ecg609SZZlzffP3JiZSHfRfrpd7el0F0cBOj4+7sjPiZSulF4Urv7Dw8Mso427nHXXTU9W7qVM5boXnpMOnCAG8jOS0o6QVx0rartLseFUfr8LmPmmk5IMECdSnuXPCTAKqWVgnsWe41xA5ESFcAuI0jUS2z5KabmA6IF6ghFF23NnzxaT1wMxand2Atq+G7tb7SmrPeQSGNVD+RCIBnDc1G7c13KgT5Zc1QTb7DTQt5fzkAvrPqGaWeLj1dxxzI/AOtfpi7PHe67hzPm0mZod8yTOmucNY+shvwOAaMZ5LeXKm33uQnJNvVX/vEaarI1LGj14G4mwJ6hJQExWWx4lFju8MJ6s0XGdYdRBYp9XW+mwSUCAP9EY8i2A4Kk1hHxQ1GZDp6tWdZOALpVmjcOgtVBS7xOXF8hCKr7BvLmhTJ29pJMEPE2hYnK5ei+QX9izsFw2PCijJXtfclbl3SZuIG0itYOS6mlHzXjLt3MlmAAgCCAAQQABCAJI81VWHjKPyhte0bG1Vs3s5B3hXtQCiA083pSU9dduKmmVowK4LGIIAghAEEAAggACELSXmbpNFh45Ds38xrCOqjJZpYfgshBAAIIAAhAEEICgvUwMmy5JZvtVJc/0EFwWAghAEEAAggACEERi6FPH3uJtUmnzg6Ut7zpiadGVLvYViBq7V+UN4Gyv8E2AyyKGIIAABAEEIAggJIZv6mYsIt8t8f9U9RKC8wrbmZUFpFdVItbUZZe8H8bisoghCCAAQQABCAIIiWH1sl0F6rYaUKuE62pHji0vvEA2bukQ8NGnR5dRM5ecHUTM7SWGIIAABAEEIAggCCBNzdQtaRyXVFe/SgM4V/rJ3Ouw6h7ymXu3Xi6LHaSLq+sF4lkeu/dv81yUyy26Z+srEO+0mxGmza0L53EzBeLdmXlg++aisN6h7v7cefi9ApkG1D8BShAMdfO6Y7T3fco0sU+wvG5LK76VhibElEwYA/l5DHggmiuLeOnkSY52Zwbzzx7bzrN5/SzAtX+1AB76lnGosxvjwAQJbUfaO45W85AUu+xM6bvE0GLJENtUrivb3vtVn5b/5eXl5enw8LBNZl6ZdJPl09XE8D/JAdpLbrDV9mFI6X+UqUdroOC+tie94XUd/HfDVrEjy2zqPKldaGGPt2uT8TggyTknthQCcW0BfONgbhxSq/UYHTrpRvXcALJuMULLz009YlV/BRgA6toQYypSo9oAAAAASUVORK5CYII="> Mazy</a>
+              <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                  <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                  </li>
+                </ul>
+              </div>
+            </nav>
         </div>
     </header>
+    
     <div class="body">
         <div class="container">
             <div class="row">
@@ -24,13 +33,9 @@
             </div>        
         </div>
     </div>
-    <footer>
+    <footer class="footer">
         <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <p><small>Copyright &copy;</small></p>
-                </div>
-            </div>
+            <span><small>Copyright &copy;</small></span>
         </div>
     </footer>
 <script type="text/javascript" src="/dist/js/commons.js"></script><script type="text/javascript" src="/dist/js/app.bundle.js"></script></body>

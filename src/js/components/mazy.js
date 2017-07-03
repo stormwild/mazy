@@ -1,4 +1,5 @@
-const canvas = $('#mazy');
+
+const canvas = $('#mazee');
 
 console.log(canvas);
 

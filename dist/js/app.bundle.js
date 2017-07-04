@@ -15747,85 +15747,15 @@ class Cell {
         this.width = param.width || 10;
         this.height = param.height || 10;
 
-        this.wall = param.wall || {
-            top: true,
-            right: true,
-            bottom: true,
-            left: true
-        };
-    }
-
-    drawTop(ctx) {
-        ctx.beginPath();
-        if (this.wall.top) {
-            ctx.strokeStyle = 'red';
-            ctx.moveTo(this.x, this.y);
-            ctx.lineTo(this.x + this.width, this.y);
-            ctx.stroke();
-        } else {
-            ctx.strokeStyle = '#efefef';
-            ctx.moveTo(this.x, this.y);
-            ctx.lineTo(this.x + this.width, this.y);
-            ctx.stroke();
-        }
-        ctx.closePath();
-    }
-
-    drawRight(ctx) {
-        ctx.beginPath();
-        if (this.wall.right) {
-            ctx.strokeStyle = 'blue';
-            ctx.moveTo(this.x + this.width, this.y);
-            ctx.lineTo(this.x + this.width, this.y + this.height);
-            ctx.stroke();
-        } else {
-            ctx.strokeStyle = '#efefef';
-            ctx.moveTo(this.x + this.width, this.y);
-            ctx.lineTo(this.x + this.width, this.y + this.height);
-            ctx.stroke();
-        }
-        ctx.closePath();
-    }
-
-    drawBottom(ctx) {
-        ctx.beginPath();
-        if (this.wall.top) {
-            ctx.strokeStyle = 'green';
-            ctx.moveTo(this.x, this.y + this.height);
-            ctx.lineTo(this.x + this.width, this.y + this.height);
-            ctx.stroke();
-        } else {
-            ctx.strokeStyle = '#efefef';
-            ctx.moveTo(this.x, this.y + this.height);
-            ctx.lineTo(this.x + this.width, this.y + this.height);
-            ctx.stroke();
-        }
-        ctx.closePath();
-    }
-
-    drawLeft(ctx) {
-        ctx.beginPath();
-        if (this.wall.right) {
-            ctx.strokeStyle = 'purple';
-            ctx.moveTo(this.x, this.y);
-            ctx.lineTo(this.x, this.y + this.height);
-            ctx.stroke();
-        } else {
-            ctx.strokeStyle = '#efefef';
-            ctx.moveTo(this.x, this.y);
-            ctx.lineTo(this.x, this.y + this.height);
-            ctx.stroke();
-        }
-        ctx.closePath();
+        this.isWall = param.isWall;
     }
 
     draw(ctx) {
-        // ctx.strokeRect(this.x, this.y, this.width, this.height);
-        // Initialize position
-        this.drawTop(ctx);
-        this.drawRight(ctx);
-        this.drawBottom(ctx);
-        this.drawLeft(ctx);
+        let fillStyle = this.isWall ? '#efffef' : '#555555';
+        ctx.fillStyle = fillStyle;
+        console.log('isWall: ' + this.isWall);
+        console.log('fillStyle: ' + fillStyle);
+        ctx.fillRect(this.x, this.y, this.width, this.height);
     }
 };
 
@@ -15857,7 +15787,7 @@ let Maze = {
         const CELL_HEIGHT = height / MAZE_SIZE; // 400 / 10 = 40 == 10 cells of 40
 
         // 400 400 10 40 40
-        console.log(width, height, MAZE_SIZE, CELL_WIDTH, CELL_HEIGHT);
+        // console.log(width, height, MAZE_SIZE, CELL_WIDTH, CELL_HEIGHT);
         // generate an array where each item is a row
         // each row is an array of cell objects
         // generate a grid based on the given dimensions of the canvas
@@ -15870,18 +15800,20 @@ let Maze = {
 
             let xPos = 0;
             for (let x = 0; x < MAZE_SIZE; x++) {
+                let isWall = Math.random() >= 0.5;
+                console.log('create isWall: ' + isWall);
                 let c = new Cell({
                     x: xPos,
                     y: yPos,
                     width: CELL_WIDTH,
-                    height: CELL_HEIGHT
+                    height: CELL_HEIGHT,
+                    isWall: isWall
                 });
                 grid[y][x] = c;
                 xPos += CELL_WIDTH;
             }
 
             yPos += CELL_HEIGHT;
-            console.log(yPos);
         }
 
         return grid;

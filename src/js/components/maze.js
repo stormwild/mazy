@@ -48,6 +48,10 @@ class Maze {
         // Initialize maze
         this.grid = this.createGrid(this.canvas.width, this.canvas.height);
         this.draw();
+        
+        // 
+        this.y = 0;
+        this.x = 0;
     }
     
     getCanvas(selector) {
@@ -67,27 +71,55 @@ class Maze {
         }
     }
     
-    step() {
+    step(dir) {
         let newGrid = [...this.grid];
-        let currentCell = newGrid[0][0];
+        
+        if(dir === 'top') {
+            this.y--;
+        }
+        
+        if(dir === 'right') {
+            this.x++;
+        }
+        
+        if(dir === 'bottom') {
+            this.y++;
+        }
+        
+        if(dir === 'left') {
+            this.x--;
+        }
+        
+        let cell = {
+            x: this.x,
+            y: this.y
+        }
+        
+        let currentCell = newGrid[cell.y][cell.x];
         currentCell.isWall = false;
         this.draw(newGrid);
     }
     
     keyUpHandler(e) {
         e.preventDefault();
-        
         console.log(e.which);
         
-        if(e.which === 221) {
-            // right square bracket
-            this.step();
+        if(e.which === 87) {
+            this.step('top');
         }
         
-        if(e.which === 219) {
-            // left square bracket
-            
+        if(e.which === 68) {
+            this.step('right');
         }
+        
+        if(e.which === 83) {
+            this.step('bottom');
+        }
+        
+        if(e.which === 65) {
+            this.step('left');
+        }
+        
     }
     
     createGrid(width, height) {

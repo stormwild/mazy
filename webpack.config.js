@@ -7,6 +7,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 
 const config = {
+    devtool: 'source-map',
     context: path.resolve(__dirname, 'src'),
     entry: {
         app: './js/app.js'

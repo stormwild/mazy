@@ -10264,15 +10264,15 @@ return jQuery;
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__scss_main_scss__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__scss_main_scss__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__scss_main_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__scss_main_scss__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_jquery__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_bootstrap__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_bootstrap__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_bootstrap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_bootstrap__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_mazy__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_mazy__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_mazy___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_mazy__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_maze__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_maze__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_maze___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_maze__);
 
 
@@ -10287,6 +10287,12 @@ __WEBPACK_IMPORTED_MODULE_4__components_maze___default.a.run('#mazy');
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(jQuery, Tether) {/*!
@@ -13825,10 +13831,10 @@ var Popover = function ($) {
 
 }();
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0), __webpack_require__(3)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0), __webpack_require__(4)))
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! tether 1.4.0 */
@@ -15649,24 +15655,11 @@ return Tether;
 
 
 /***/ }),
-/* 4 */
-/***/ (function(module, exports) {
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
 
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 5 */,
-/* 6 */,
-/* 7 */,
-/* 8 */,
-/* 9 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 /* WEBPACK VAR INJECTION */(function($) {
 const canvas = $('#mazee');
-
-console.log(canvas);
 
 const board = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 1, 1, 1, 1, 1, 1, 1, 1, 0], [1, 0, 1, 0, 0, 0, 0, 0, 1, 0], [0, 0, 0, 0, 1, 1, 1, 0, 1, 0], [0, 1, 1, 0, 0, 0, 1, 0, 1, 0], [0, 0, 1, 1, 1, 1, 1, 0, 1, 0], [1, 0, 1, 0, 0, 0, 1, 0, 1, 0], [1, 0, 1, 0, 1, 0, 1, 0, 0, 0], [1, 0, 1, 0, 1, 0, 0, 1, 1, 0], [-1, 0, 1, 0, 1, 1, 0, 0, 0, 0]];
 
@@ -15733,60 +15726,105 @@ $(document).keyup(function (e) {
 });
 
 draw();
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(0)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 10 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function($) {var Maze = {
-    create: function (width, height) {
-        // @TODO implement validation
-        // given 400, 400 or assuming divisible by 10
-        // divide 400 by 10 = 40 x 40
-        let x = width / 10; // 40
-        let y = height / 10; // 40
+/* WEBPACK VAR INJECTION */(function($) {let InvalidCanvasElementException = function (value) {
+    this.value = value;
+    this.message = 'No canvas element provided';
+    this.toString = function () {
+        return this.value + this.message;
+    };
+};
 
-        let totalCells = x * y;
-        let cells = [];
-        let unvis = []; // unvisited
+class Cell {
+    constructor(param) {
+        this.x = param.x || 0;
+        this.y = param.y || 0;
+        this.width = param.width || 10;
+        this.height = param.height || 10;
+    }
 
-        for (let i = 0; i < y; i++) {
-            cells[i] = [];
-            unvis[i] = [];
+    draw(ctx) {
+        ctx.strokeRect(this.x, this.y, this.width, this.height);
+    }
+};
 
-            for (let j = 0; j < x; j++) {
-                cells[i][j] = [0, 0, 0, 0];
-                unvis[i][j] = true;
+let Maze = {
+    getCanvas(selector) {
+        let el = $(selector) ? $(selector).get(0) : null;
+
+        if (this.isCanvas(el)) {
+            return el;
+        }
+
+        throw new InvalidCanvasElementException(el);
+    },
+    isCanvas(el) {
+        let isCanvas = el && el.nodeType === 1 && el.nodeName === 'CANVAS';
+
+        if (isCanvas === true) {
+            console.log('Valid canvas element: ' + el.nodeName + ' found. Element id is ' + el.id);
+        }
+
+        return isCanvas;
+    },
+    create(width, height) {
+        console.log(width, height); // 400 400
+        const MAZE_SIZE = 10;
+
+        // Assume canavas width and height are divisible evenly by 10
+        const CELL_WIDTH = width / MAZE_SIZE; // 400 / 10 = 40 == 10 cells of 40
+        const CELL_HEIGHT = height / MAZE_SIZE; // 400 / 10 = 40 == 10 cells of 40
+
+        // 400 400 10 40 40
+        console.log(width, height, MAZE_SIZE, CELL_WIDTH, CELL_HEIGHT);
+        // generate an array where each item is a row
+        // each row is an array of cell objects
+        // generate a grid based on the given dimensions of the canvas
+        // generate the blocksize/cellSize where it is a size that produces an even number of cells
+        let grid = [];
+
+        let yPos = 0;
+        for (let y = 0; y < MAZE_SIZE; y++) {
+            grid[y] = [];
+
+            let xPos = 0;
+            for (let x = 0; x < MAZE_SIZE; x++) {
+                let c = new Cell({
+                    x: xPos,
+                    y: yPos,
+                    width: CELL_WIDTH,
+                    height: CELL_HEIGHT
+                });
+                grid[y][x] = c;
+                xPos += CELL_WIDTH;
             }
+
+            yPos += CELL_HEIGHT;
+            console.log(yPos);
         }
 
-        let currentCell = [Math.floor(Math.random() * y), Math.floor(Math.random() * x)];
-        let path = [currentCell];
-
-        unvis[currentCell[0]][currentCell[1]] = false; // [y, x]
-
-        let visited = 1;
-
-        // Loop through all available cell positions
-        while (visited < totalCells) {
-            // Determine neighboring cells
-            let pot = [[currentCell[0] - 1, currentCell[1], 0, 2], [currentCell[0], currentCell[1] + 1, 1, 3], [currentCell[0] + 1, currentCell[1], 2, 0], [currentCell[0], currentCell[1] - 1, 3, 1]];
-
-            let neighbors = [];
-        }
-
-        return cells;
+        return grid;
     },
 
-    run: function (selector) {
-        let $el = $(selector);
+    draw(canvas, ctx, grid) {
+        for (y = 0; y < grid.length; y++) {
+            for (x = 0; x < grid[y].length; x++) {
+                grid[y][x].draw(ctx);
+            }
+        }
+    },
 
-        console.log('Maze running...');
-
-        let mazeData = this.create(400, 400);
-
-        console.log($el, mazeData);
+    run(selector) {
+        // get a reference to the canvas element
+        let canvas = this.getCanvas(selector);
+        let ctx = canvas.getContext('2d');
+        let grid = this.create(canvas.width, canvas.width);
+        this.draw(canvas, ctx, grid);
     }
 };
 
@@ -15795,3 +15833,4 @@ module.exports = Maze;
 
 /***/ })
 ],[1]);
+//# sourceMappingURL=app.bundle.js.map

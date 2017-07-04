@@ -3,7 +3,7 @@ import '../scss/main.scss';
 import 'jquery';
 import 'bootstrap';
 
-import './components/mazy';
+import mazy from './components/mazy';
 
 import Maze from './components/maze';
 

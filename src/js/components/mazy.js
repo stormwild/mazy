@@ -1,8 +1,6 @@
 
 const canvas = $('#mazee');
 
-console.log(canvas);
-
 const board = [
     [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],

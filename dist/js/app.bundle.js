@@ -15746,10 +15746,86 @@ class Cell {
         this.y = param.y || 0;
         this.width = param.width || 10;
         this.height = param.height || 10;
+
+        this.wall = param.wall || {
+            top: true,
+            right: true,
+            bottom: true,
+            left: true
+        };
+    }
+
+    drawTop(ctx) {
+        ctx.beginPath();
+        if (this.wall.top) {
+            ctx.strokeStyle = 'red';
+            ctx.moveTo(this.x, this.y);
+            ctx.lineTo(this.x + this.width, this.y);
+            ctx.stroke();
+        } else {
+            ctx.strokeStyle = '#efefef';
+            ctx.moveTo(this.x, this.y);
+            ctx.lineTo(this.x + this.width, this.y);
+            ctx.stroke();
+        }
+        ctx.closePath();
+    }
+
+    drawRight(ctx) {
+        ctx.beginPath();
+        if (this.wall.right) {
+            ctx.strokeStyle = 'blue';
+            ctx.moveTo(this.x + this.width, this.y);
+            ctx.lineTo(this.x + this.width, this.y + this.height);
+            ctx.stroke();
+        } else {
+            ctx.strokeStyle = '#efefef';
+            ctx.moveTo(this.x + this.width, this.y);
+            ctx.lineTo(this.x + this.width, this.y + this.height);
+            ctx.stroke();
+        }
+        ctx.closePath();
+    }
+
+    drawBottom(ctx) {
+        ctx.beginPath();
+        if (this.wall.top) {
+            ctx.strokeStyle = 'green';
+            ctx.moveTo(this.x, this.y + this.height);
+            ctx.lineTo(this.x + this.width, this.y + this.height);
+            ctx.stroke();
+        } else {
+            ctx.strokeStyle = '#efefef';
+            ctx.moveTo(this.x, this.y + this.height);
+            ctx.lineTo(this.x + this.width, this.y + this.height);
+            ctx.stroke();
+        }
+        ctx.closePath();
+    }
+
+    drawLeft(ctx) {
+        ctx.beginPath();
+        if (this.wall.right) {
+            ctx.strokeStyle = 'purple';
+            ctx.moveTo(this.x, this.y);
+            ctx.lineTo(this.x, this.y + this.height);
+            ctx.stroke();
+        } else {
+            ctx.strokeStyle = '#efefef';
+            ctx.moveTo(this.x, this.y);
+            ctx.lineTo(this.x, this.y + this.height);
+            ctx.stroke();
+        }
+        ctx.closePath();
     }
 
     draw(ctx) {
-        ctx.strokeRect(this.x, this.y, this.width, this.height);
+        // ctx.strokeRect(this.x, this.y, this.width, this.height);
+        // Initialize position
+        this.drawTop(ctx);
+        this.drawRight(ctx);
+        this.drawBottom(ctx);
+        this.drawLeft(ctx);
     }
 };
 

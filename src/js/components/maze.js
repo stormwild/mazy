@@ -26,6 +26,7 @@ class Cell {
 };
 
 let Maze = {
+    MAZE_SIZE: 10,
     getCanvas(selector) {
         let el = $(selector) ? $(selector).get(0) : null;
 
@@ -44,36 +45,25 @@ let Maze = {
 
         return isCanvas;
     },
-    create(width, height) {
-        console.log(width, height); // 400 400
-        const MAZE_SIZE = 10;
-
-        // Assume canavas width and height are divisible evenly by 10
-        const CELL_WIDTH = width / MAZE_SIZE; // 400 / 10 = 40 == 10 cells of 40
-        const CELL_HEIGHT = height / MAZE_SIZE; // 400 / 10 = 40 == 10 cells of 40
-
-        // 400 400 10 40 40
-        // console.log(width, height, MAZE_SIZE, CELL_WIDTH, CELL_HEIGHT);
-        // generate an array where each item is a row
-        // each row is an array of cell objects
-        // generate a grid based on the given dimensions of the canvas
-        // generate the blocksize/cellSize where it is a size that produces an even number of cells
+    
+    createGrid(width, height) {
+        const MAZE_SIZE = this.MAZE_SIZE;
+        const CELL_WIDTH = width / MAZE_SIZE;
+        const CELL_HEIGHT = height / MAZE_SIZE;
         let grid = [];
-        
+
         let yPos = 0;
         for (let y = 0; y < MAZE_SIZE; y++) {
             grid[y] = [];
 
             let xPos = 0;
             for (let x = 0; x < MAZE_SIZE; x++) {
-                let isWall = Math.random() >= 0.5;
-                console.log('create isWall: ' + isWall);
                 let c = new Cell({
                     x: xPos,
                     y: yPos,
                     width: CELL_WIDTH,
                     height: CELL_HEIGHT,
-                    isWall: isWall
+                    isWall: true
                 });
                 grid[y][x] = c;
                 xPos += CELL_WIDTH;
@@ -84,10 +74,62 @@ let Maze = {
 
         return grid;
     },
+    
+    getRandomCell(width, height) {
+        let mazeWidth = width || this.MAZE_SIZE;
+        let mazeHeight = height || this.MAZE_SIZE; 
+        let x = Math.floor(Math.random() * mazeWidth);
+        let y = Math.floor(Math.random() * mazeHeight);
+        
+        return {
+            x: x,
+            y: y
+        };
+    },
+    
+    getAvailableCells(currentCell) {
+        // based on the positon of the current cell in the grid
+        // get a list of available cells
+        // get the top, right, bottom, left values based on the currentCell's position (y, x) in the grid
+        let available = [];
+        for(let n = 0; n < 4; n++) {
+            // Check for the top of the currentCell
+            
+            if(currentCell.y - 1 > -1 && true) {
+                available.push({ x: currentCell.x, y: currentCell.y - 1 });
+            }
+        }
+    },
+    
+    create(width, height) {
+        let grid = this.createGrid(width, height);
+        let maze = grid;
+        
+        const totalCells = Math.pow(this.MAZE_SIZE, 2); // 
+        let cells = [];
+        let unvis = [];
+        
+        let currentCell = this.getRandomCell();
+        
+        maze[currentCell.y][currentCell.x].isWall = false;
+        
+/*        let path = [currentCell.y, currentCell.x];
+        unvis[currentCell.y][currentCell.x] = false; // We have visited the first cell (in the grid)
+        
+        let visited = 1;
+        
+        while(visited < totalCells) {
+            
+            let availableCells = this.getAvailableCells(currentCell);
+            
+        }
+*/        
+        return maze;
+    },
 
     draw(canvas, ctx, grid) {
-        for (y = 0; y < grid.length; y++) {
-            for (x = 0; x < grid[y].length; x++) {
+        for (let y = 0; y < grid.length; y++) {
+            for (let x = 0; x < grid[y].length; x++) {
                 grid[y][x].draw(ctx);
             }
         }
@@ -97,8 +139,8 @@ let Maze = {
         // get a reference to the canvas element
         let canvas = this.getCanvas(selector);
         let ctx = canvas.getContext('2d');
-        let grid = this.create(canvas.width, canvas.width);
-        this.draw(canvas, ctx, grid);
+        let maze = this.create(canvas.width, canvas.width);
+        this.draw(canvas, ctx, maze);
     }
 };
 

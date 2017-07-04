@@ -1,10 +1,14 @@
-let InvalidCanvasElementException = function(value) {
-    this.value = value;
-    this.message = 'No canvas element provided';
-    this.toString = function() {
-        return this.value + this.message;
+
+class InvalidCanvasElementException {
+    constructor(value) {
+        this.value = value;
+        this.message = 'No canvas element provided';
     }
-};
+    
+    toString() {
+        return this.value + ' ' + this.message;
+    }
+}
 
 class Cell {
     constructor(param) {
@@ -19,13 +23,100 @@ class Cell {
     draw(ctx) {
         let fillStyle = this.isWall ? '#efffef' : '#555555';
         ctx.fillStyle = fillStyle;
-        console.log('isWall: ' + this.isWall);
-        console.log('fillStyle: ' + fillStyle);
         ctx.fillRect(this.x, this.y, this.width, this.height);
     }
 };
 
-let Maze = {
+class Maze {
+    constructor(options) {
+        
+        let opt = Object.assign({
+            selector: '#mazy',
+            mazeSize: 10
+        }, options || {});
+        
+        this.canvas = this.getCanvas(opt.selector);
+        this.ctx = this.canvas.getContext('2d');
+        this.mazeSize = opt.mazeSize;
+        
+        // Bind keyup event
+        let self = this;
+        $(document).keyup(function(e){
+            self.keyUpHandler(e);
+        });
+        
+        // Initialize maze
+        this.grid = this.createGrid(this.canvas.width, this.canvas.height);
+        this.draw();
+    }
+    
+    getCanvas(selector) {
+        let el = document.getElementById(selector) || $(selector).get(0);
+        if(el && el.nodeType === 1 && el.nodeName === 'CANVAS') {
+            return el;       
+        }
+        throw new InvalidCanvasElementException(selector);
+    }
+    
+    draw(grid) {
+        let maze = [...(grid || this.grid)];
+        for (let y = 0; y < maze.length; y++) {
+            for (let x = 0; x < maze[y].length; x++) {
+                maze[y][x].draw(this.ctx);
+            }
+        }
+    }
+    
+    step() {
+        let newGrid = [...this.grid];
+        let currentCell = newGrid[0][0];
+        currentCell.isWall = false;
+        this.draw(newGrid);
+    }
+    
+    keyUpHandler(e) {
+        e.preventDefault();
+        
+        console.log(e.which);
+        
+        if(e.which === 221) {
+            // right square bracket
+            this.step();
+        }
+        
+        if(e.which === 219) {
+            // left square bracket
+            
+        }
+    }
+    
+    createGrid(width, height) {
+        let grid = [];
+        let cellWidth = width / this.mazeSize;
+        let cellHeight = height / this.mazeSize;
+        
+        let yPos = 0;
+        for (let y = 0; y < this.mazeSize; y++) {
+            grid[y] = [];
+            
+            let xPos = 0;
+            for (let x = 0; x < this.mazeSize; x++) {
+                grid[y][x] = new Cell({
+                    x: xPos,
+                    y: yPos,
+                    width: cellWidth,
+                    height: cellHeight,
+                    isWall: true
+                });
+                xPos += cellWidth;
+            }
+            yPos += cellHeight;
+        }
+        return grid;
+    }
+};
+
+let MazeBAK = {
     MAZE_SIZE: 10,
     getCanvas(selector) {
         let el = $(selector) ? $(selector).get(0) : null;
@@ -75,16 +166,46 @@ let Maze = {
         return grid;
     },
 
-    getRandomCell(width, height) {
-        let mazeWidth = width || this.MAZE_SIZE;
-        let mazeHeight = height || this.MAZE_SIZE;
-        let x = Math.floor(Math.random() * mazeWidth);
-        let y = Math.floor(Math.random() * mazeHeight);
+    getNextAvailableCell(grid, visitedCells) {
+        let newCell;
+        for (let y = 0; y < grid.length; y++) {
+            for (let x = 0; x < grid[y].length; x++) {
+                newCell = {x: x, y: y};
+                if(visitedCells.indexOf(newCell) === -1 && this.getNonAdjacent([newCell], visitedCells, newCell).length > 0) {
+                    return newCell;                    
+                }
+            }
+        }
+    },
 
-        return {
-            x: x,
-            y: y
-        };
+    getNonAdjacent(availableCells, visitedCells, currentCell) {
+        return availableCells.filter(function(availableCell, i) {
+            let keep = true;
+            visitedCells.forEach(function(visitedCell, j) {
+                if (visitedCell.x !== currentCell.x && visitedCell.y !== currentCell.y) {
+                    // Check top
+                    if (availableCell.y - 1 === visitedCell.y) {
+                        keep = false;
+                    }
+
+                    // Check right
+                    if (availableCell.x + 1 === visitedCell.x) {
+                        keep = false;
+                    }
+
+                    // Check bottom
+                    if (availableCell.y + 1 === visitedCell.y) {
+                        keep = false;
+                    }
+
+                    // Check left
+                    if (availableCell.x - 1 === visitedCell.x) {
+                        keep = false;
+                    }
+                }
+            });
+            return keep;
+        });
     },
 
     getAvailableCells(currentCell, visitedCells) {
@@ -95,7 +216,10 @@ let Maze = {
 
         // Check top of currentCell
         let top = currentCell.y - 1;
-        if (top > -1 && visitedCells.indexOf({ x: currentCell.x, y:top }) === -1) {
+        if (top > -1 && visitedCells.indexOf({
+                x: currentCell.x,
+                y: top
+            }) === -1) {
             availableCells.push({
                 y: top,
                 x: currentCell.x
@@ -104,7 +228,10 @@ let Maze = {
 
         // Check the right of currentCell
         let right = currentCell.x + 1;
-        if (right < this.MAZE_SIZE && visitedCells.indexOf({x: right, y: currentCell.y }) === -1) {
+        if (right < this.MAZE_SIZE && visitedCells.indexOf({
+                x: right,
+                y: currentCell.y
+            }) === -1) {
             availableCells.push({
                 y: currentCell.y,
                 x: right
@@ -113,7 +240,10 @@ let Maze = {
 
         // Check the bottom of the currentCell
         let bottom = currentCell.y + 1;
-        if (bottom < this.MAZE_SIZE && visitedCells.indexOf({x: currentCell.x, y: bottom }) === -1) {
+        if (bottom < this.MAZE_SIZE && visitedCells.indexOf({
+                x: currentCell.x,
+                y: bottom
+            }) === -1) {
             availableCells.push({
                 y: bottom,
                 x: currentCell.x
@@ -122,60 +252,54 @@ let Maze = {
 
         // Check the left of currentCell
         let left = currentCell.x - 1;
-        if (left > -1 && visitedCells.indexOf({ x: left, y: currentCell.y }) !== -1) {
+        if (left > -1 && visitedCells.indexOf({
+                x: left,
+                y: currentCell.y
+            }) !== -1) {
             availableCells.push({
                 y: currentCell.y,
                 x: left
             });
         }
 
-        return availableCells;
+        return this.getNonAdjacent(availableCells, visitedCells, currentCell);
     },
 
     getAnyAvailableCell(availableCells) {
         // if availableCells.length = 3 then index could be any value from 0-2
-        let index = Math.floor(Math.random() * availableCells.length); 
+        let index = Math.floor(Math.random() * availableCells.length);
         console.log('Available Cells: ' + availableCells.length, 'Random : ' + index);
         return availableCells[index];
     },
-    
+
     create(width, height) {
         let grid = this.createGrid(width, height);
         let maze = grid;
 
         const totalCells = Math.pow(this.MAZE_SIZE, 2); // 
         let visitedCells = [];
-
-        let currentCell = this.getRandomCell();
-        let nextCell;
-
-        maze[currentCell.y][currentCell.x].isWall = false;
-
-        let path = [currentCell.y, currentCell.x];
+        let currentCell = this.getNextAvailableCell(grid, visitedCells)
         
-        visitedCells.push(currentCell); // We have visited the first cell (in the grid)
-
-        let visited = 1;
-
-        while (visited < totalCells) {
-
+        let path = [];
+        let nextCell;
+        
+        while(currentCell) {
+            console.log('currentCell: ', currentCell);
+            visitedCells.push(currentCell);
             let availableCells = this.getAvailableCells(currentCell, visitedCells);
             
-            if(availableCells.length > 0) {
+            if (availableCells.length > 0) {
                 nextCell = this.getAnyAvailableCell(availableCells);
-                
                 maze[nextCell.y][nextCell.x].isWall = false;
-                
                 visitedCells.push(nextCell); // We have visited the nextCell
-                visited++;
                 currentCell = nextCell;
                 path.push(currentCell);
             } else {
-                currentCell = path.pop();
+                console.log('No availableCells');
+                currentCell = this.getNextAvailableCell(grid, visitedCells);
             }
-
         }
-
+        
         return maze;
     },
 

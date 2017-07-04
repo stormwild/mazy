@@ -7,4 +7,4 @@ import mazy from './components/mazy';
 
 import Maze from './components/maze';
 
-Maze.run('#mazy');
+let maze = new Maze({ selector: '#mazy' });
